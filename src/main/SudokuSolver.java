@@ -21,35 +21,41 @@ public class SudokuSolver {
         }
     }
 
-    private void checkNumbersValidity(int[][] numbers) {
-        HashSet<Integer> ensemble = new HashSet<>();
+    public static void checkNumbersValidity(int[][] numbers) {
+        HashSet<Integer> rowSet = new HashSet<>();
+        HashSet<Integer> colSet = new HashSet<>();
+        HashSet<Integer> boxSet = new HashSet<>();
+
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
-                if (!ensemble.add(numbers[i][j])) {
-                    throw new RuntimeException("Invalid sudoku input");
+                int number = numbers[i][j];
+                if (number != 0 && !rowSet.add(number)) {
+                    throw new RuntimeException("Invalid sudoku input on field [" + i + "][" + j + "]");
+                }
+                number = numbers[j][i];
+                if (number != 0 && !colSet.add(number)) {
+                    throw new RuntimeException("Invalid sudoku input on field [" + j + "][" + i + "]");
                 }
             }
-            ensemble.clear();
-            for (int j = 0; j < 9; j++) {
-                if (!ensemble.add(numbers[j][i])) {
-                    throw new RuntimeException("Invalid sudoku input");
-                }
-            }
-            ensemble.clear();
+            rowSet.clear();
+            colSet.clear();
         }
+
         for (int i = 1; i < 9; i += 3) {
             for (int j = 1; j < 9; j += 3) {
                 for (int delta_i = -1; delta_i <= 1; delta_i++) {
                     for (int delta_j = -1; delta_j <= 1; delta_j++) {
-                        if (!ensemble.add(numbers[i + delta_i][j + delta_j])) {
-                            throw new RuntimeException("Invalid sudoku input");
+                        int number = numbers[i + delta_i][j + delta_j];
+                        if (number != 0 && !boxSet.add(number)) {
+                            throw new RuntimeException("Invalid sudoku input on field [" + (i + delta_i) + "][" + (j + delta_j) + "]");
                         }
                     }
                 }
-                ensemble.clear();
+                boxSet.clear();
             }
         }
     }
+
 
     public int getNumber(int x, int y) {
         return sudoku[x][y] instanceof Integer number ? number : 0;
