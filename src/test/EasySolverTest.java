@@ -3,18 +3,61 @@ package test;
 import main.SudokuSolver;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.fail;
 import static test.SampleSudokus.*;
 
 public class EasySolverTest {
 
     @Test
-    void validityCheckTest1() {
-        SudokuSolver.checkNumbersValidity(sudoku1);
-        SudokuSolver.checkNumbersValidity(sudoku2);
-        SudokuSolver.checkNumbersValidity(sudoku3);
-        SudokuSolver.checkNumbersValidity(sudoku4);
-        SudokuSolver.checkNumbersValidity(sudoku5);
-        SudokuSolver.checkNumbersValidity(sudoku6);
+    void sudokuTest1() {
+        testSudokuSolving(sudoku1);
+    }
+
+    @Test
+    void sudokuTest2() {
+        testSudokuSolving(sudoku2);
+    }
+
+    @Test
+    void sudokuTest3() {
+        testSudokuSolving(sudoku3);
+    }
+
+    @Test
+    void sudokuTest4() {
+        testSudokuSolving(sudoku4);
+    }
+
+    @Test
+    void sudokuTest5() {
+        testSudokuSolving(sudoku5);
+    }
+
+    @Test
+    void sudokuTest6() {
+        testSudokuSolving(sudoku6);
+    }
+
+    void testSudokuSolving(int[][] sudoku) {
+        try {
+            Thread executor = Thread.currentThread();
+            (new Thread(() -> {
+                int[][] solvedSudoku = SudokuSolver.solveSudoku(sudoku);
+                System.out.println(
+                        "Solved Sudoku:\n" + Arrays.stream(solvedSudoku).map(
+                                row -> Arrays.toString(row).replaceAll("[\\[\\],]", "") + "\n"
+                        ).collect(Collectors.joining())
+                );
+                executor.interrupt();
+            })).start();
+            Thread.sleep(1000);
+            fail();
+        } catch (InterruptedException interruptedException) {
+            System.out.println("\n Test executed successfully");
+        }
     }
 
 }
