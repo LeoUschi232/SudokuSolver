@@ -5,8 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import static test.SampleSudokus.*;
 
-public class ValidityCheckTest {
-
+public class EasySolverTest {
 
     @Test
     void validityCheckTest1() {
@@ -17,4 +16,5 @@ public class ValidityCheckTest {
         SudokuSolver.checkNumbersValidity(sudoku5);
         SudokuSolver.checkNumbersValidity(sudoku6);
     }
+
 }
