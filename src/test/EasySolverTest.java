@@ -54,7 +54,7 @@ public class EasySolverTest {
                 executor.interrupt();
             })).start();
             Thread.sleep(1000);
-            fail();
+            fail("Couldn't solve sudoku in less than 1 second");
         } catch (InterruptedException interruptedException) {
             System.out.println("\n Test executed successfully");
         }

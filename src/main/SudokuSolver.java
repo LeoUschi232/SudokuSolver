@@ -69,7 +69,81 @@ public class SudokuSolver {
     private void solve() {
         while (!checkSudoku()) {
             removeImpossibles();
+            assignIsolatedNumbers();
+        }
+    }
 
+    private void assignIsolatedNumbers() {
+        for (int i = 0; i < 9; i++) {
+            int[] amountLeftPossibilitiesPerValueRow = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+            int[] amountLeftPossibilitiesPerValueColumn = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+            for (int j = 0; j < 9; j++) {
+                if (sudoku[i][j] instanceof ArrayList<?> possibles) {
+                    for (Object possible : possibles) {
+                        amountLeftPossibilitiesPerValueRow[(int) possible]++;
+                    }
+                }
+                if (sudoku[j][i] instanceof ArrayList<?> possibles) {
+                    for (Object possible : possibles) {
+                        amountLeftPossibilitiesPerValueColumn[(int) possible]++;
+                    }
+                }
+            }
+            assignIsolatedNumber(amountLeftPossibilitiesPerValueRow, i, DigitCollectionType.ROW);
+            assignIsolatedNumber(amountLeftPossibilitiesPerValueColumn, i, DigitCollectionType.COLUMN);
+        }
+
+        for (int i = 1; i < 9; i += 3) {
+            for (int j = 1; j < 9; j += 3) {
+                int[] amountLeftPossibilitiesPerValueBox = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+                for (int delta_i = -1; delta_i <= 1; delta_i++) {
+                    for (int delta_j = -1; delta_j <= 1; delta_j++) {
+                        if (sudoku[i + delta_i][j + delta_j] instanceof ArrayList<?> possibles) {
+                            for (Object possible : possibles) {
+                                amountLeftPossibilitiesPerValueBox[(int) possible]++;
+                            }
+                        }
+                    }
+                }
+                for(int leftPossibility = 1; leftPossibility < 10; leftPossibility++) {
+                    int amount = amountLeftPossibilitiesPerValueBox[leftPossibility];
+                    if (amount == 1) {
+                        for (int delta_i = -1; delta_i <= 1; delta_i++) {
+                            for (int delta_j = -1; delta_j <= 1; delta_j++) {
+                                if (sudoku[i + delta_i][j + delta_j] instanceof ArrayList<?> possibles && possibles.contains(leftPossibility)) {
+                                    sudoku[i + delta_i][j + delta_j] = leftPossibility;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private void assignIsolatedNumber(int[] amountLeftPossibilitiesPerValue, int i, DigitCollectionType type) {
+        if (type == DigitCollectionType.BOX) {
+            throw new RuntimeException("This method isn't supposed to be called with DigitCollectionType.BOX");
+        }
+
+        for (int leftPossibility = 1; leftPossibility < 10; leftPossibility++) {
+            int amount = amountLeftPossibilitiesPerValue[leftPossibility];
+            if (amount == 1) {
+                for (int j = 0; j < 9; j++) {
+                    switch (type) {
+                        case ROW -> {
+                            if (sudoku[i][j] instanceof ArrayList<?> possibles && possibles.contains(leftPossibility)) {
+                                sudoku[i][j] = leftPossibility;
+                            }
+                        }
+                        case COLUMN -> {
+                            if (sudoku[j][i] instanceof ArrayList<?> possibles && possibles.contains(leftPossibility)) {
+                                sudoku[j][i] = leftPossibility;
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
 
