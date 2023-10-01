@@ -7,6 +7,13 @@ import java.util.HashSet;
 public class SudokuSolver {
     private final Object[][] sudoku;
 
+    /**
+     * Initializes the SudokuSolver with the given Sudoku numbers
+     * Throws a RuntimeException for invalid Sudoku input
+     * Cells with zeros are considered empty and are initialized with a list of all possible values
+     *
+     * @param numbers the Sudoku numbers to initialize the SudokuSolver with
+     */
     private SudokuSolver(int[][] numbers) {
         checkNumbersValidity(numbers);
         sudoku = new Object[9][9];
@@ -21,7 +28,12 @@ public class SudokuSolver {
         }
     }
 
-
+    /**
+     * Validates the sudoku numbers, ensuring no duplicates exist in any row, column, or box
+     * Throws a RuntimeException for invalid Sudoku input
+     *
+     * @param numbers the Sudoku numbers to validate
+     */
     public static void checkNumbersValidity(int[][] numbers) {
         HashSet<Integer> rowSet = new HashSet<>();
         HashSet<Integer> colSet = new HashSet<>();
@@ -57,6 +69,12 @@ public class SudokuSolver {
         }
     }
 
+    /**
+     * Solves the Sudoku puzzle and returns the solved puzzle
+     * Throws a RuntimeException if the puzzle is unsolvable
+     *
+     * @param sudoku the Sudoku puzzle to solve
+     */
     public static int[][] solveSudoku(int[][] sudoku) {
         SudokuSolver sudokuSolver = new SudokuSolver(sudoku);
         sudokuSolver.solve();
@@ -66,13 +84,24 @@ public class SudokuSolver {
         throw new RuntimeException("Unable to solve Sudoku" + Arrays.toString(sudoku));
     }
 
+    /**
+     * The main solver method, iteratively refines the puzzle until a solution is reached by removing values
+     * from array lists which are impossible to be true for the given cells and assigning numbers to cells if
+     * they cannot be assigned to any other cell in the same row, column, or box
+     * After filling all cells, checks if the sudoku solution is valid
+     */
     private void solve() {
         while (!checkSudoku()) {
             removeImpossibles();
             assignIsolatedNumbers();
         }
+        checkNumbersValidity(getSudoku());
     }
 
+    /**
+     * Assigns numbers to cells in rows, columns, and boxes where only one cell can contain a certain number
+     * For example, if a row has only one cell where the number 5 can go, it assigns 5 to that cell
+     */
     private void assignIsolatedNumbers() {
         for (int i = 0; i < 9; i++) {
             int[] amountLeftPossibilitiesPerValueRow = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
@@ -105,7 +134,7 @@ public class SudokuSolver {
                         }
                     }
                 }
-                for(int leftPossibility = 1; leftPossibility < 10; leftPossibility++) {
+                for (int leftPossibility = 1; leftPossibility < 10; leftPossibility++) {
                     int amount = amountLeftPossibilitiesPerValueBox[leftPossibility];
                     if (amount == 1) {
                         for (int delta_i = -1; delta_i <= 1; delta_i++) {
@@ -121,6 +150,13 @@ public class SudokuSolver {
         }
     }
 
+    /**
+     * Assigns numbers to cells in the row or column where only one cell can contain a certain number
+     *
+     * @param amountLeftPossibilitiesPerValue the amount of cells in the row or column where a certain number can go
+     * @param i                               the row or column index
+     * @param type                            the DigitCollectionType, either ROW or COLUMN
+     */
     private void assignIsolatedNumber(int[] amountLeftPossibilitiesPerValue, int i, DigitCollectionType type) {
         if (type == DigitCollectionType.BOX) {
             throw new RuntimeException("This method isn't supposed to be called with DigitCollectionType.BOX");
@@ -147,6 +183,12 @@ public class SudokuSolver {
         }
     }
 
+    /**
+     * Converts the internal representation of the Sudoku puzzle to a 2D int array and returns it
+     * Empty cells are represented by zeros
+     *
+     * @return the Sudoku puzzle as a 2D int array
+     */
     private int[][] getSudoku() {
         return Arrays.stream(sudoku).map(
                 rows -> Arrays.stream(rows).
@@ -155,6 +197,12 @@ public class SudokuSolver {
         ).toArray(int[][]::new);
     }
 
+    /**
+     * Iterates through each cell of the Sudoku puzzle
+     * If a number is assigned to a cell, it removes this number from the array lists of possibilities of empty cells
+     * in the corresponding row, column, and box
+     * If a cell has only one possibility left, it assigns this possibility to the cell
+     */
     private void removeImpossibles() {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {
@@ -175,10 +223,25 @@ public class SudokuSolver {
         }
     }
 
+    /**
+     * Returns the number assigned to the cell at the given coordinates
+     * If the cell is empty, it returns 0
+     *
+     * @param x the x coordinate of the cell
+     * @param y the y coordinate of the cell
+     * @return the number assigned to the cell at the given coordinates, 0 if the cell is empty
+     */
     private int getNumber(int x, int y) {
         return sudoku[x][y] instanceof Integer number ? number : 0;
     }
 
+    /**
+     * Removes the given number from the array list of possibilities of the cell at the given coordinates
+     *
+     * @param x      the x coordinate of the cell
+     * @param y      the y coordinate of the cell
+     * @param number the number to remove from the array list of possibilities of the cell
+     */
     private void removePossibleNumber(int x, int y, Integer number) {
         if (sudoku[x][y] instanceof ArrayList<?> possibles) {
             possibles.remove(number);
@@ -188,7 +251,13 @@ public class SudokuSolver {
         }
     }
 
-
+    /**
+     * Returns the indices of the cells in the same box as the cell at the given index
+     * The indices are returned in the order of the rows of the box
+     *
+     * @param i the index of the cell
+     * @return the indices of the cells in the same box as the cell at the given index
+     */
     private int[] getBoxIndices(int i) {
         return switch (i) {
             case 0, 1, 2 -> new int[]{0, 1, 2};
@@ -198,6 +267,11 @@ public class SudokuSolver {
         };
     }
 
+    /**
+     * Returns true if the Sudoku puzzle is solved, false otherwise
+     *
+     * @return true if the Sudoku puzzle is solved, false otherwise
+     */
     private boolean checkSudoku() {
         for (int i = 0; i < 9; i++) {
             for (int j = 0; j < 9; j++) {

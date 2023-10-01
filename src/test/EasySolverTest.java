@@ -59,5 +59,4 @@ public class EasySolverTest {
             System.out.println("\n Test executed successfully");
         }
     }
-
 }
