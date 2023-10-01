@@ -1,5 +1,7 @@
 package test;
 
+import java.util.Arrays;
+
 public class SampleSudokus {
     public final static int[][] sudoku1 = {
             {0, 0, 8, 1, 0, 7, 0, 0, 0},
@@ -67,4 +69,20 @@ public class SampleSudokus {
             {0, 0, 0, 4, 1, 9, 0, 0, 5},
             {0, 0, 0, 0, 8, 0, 0, 7, 9}
     };
+
+    /**
+     * Copies a sudoku into a new object
+     * May throw a RuntimeException if the sudoku is invalid
+     *
+     * @param sudoku the sudoku to copy
+     * @return the copy of the sudoku
+     */
+    public static int[][] copySudoku(int[][] sudoku) {
+        final int[][] copy = new int[9][];
+        for (int i = 0; i < 9; i++) {
+            copy[i] = Arrays.copyOf(sudoku[i], sudoku[i].length);
+        }
+        return copy;
+    }
+
 }

@@ -95,13 +95,28 @@ public class SudokuSolver {
      */
     private void solve() {
         while (!checkSudoku()) {
+            changedInLastIteration = true;
             while (changedInLastIteration) {
-                changedInLastIteration = false;
-                removeImpossibles();
+                while (changedInLastIteration) {
+                    changedInLastIteration = false;
+                    removeImpossibles();
+                }
+                assignIsolatedNumbers();
             }
-            assignIsolatedNumbers();
+            assignRandomDueToDegreeOfFreedom();
         }
         checkNumbersValidity(getSudoku());
+    }
+
+    private void assignRandomDueToDegreeOfFreedom() {
+        for (int i = 0; i < 9; i++) {
+            for (int j = 0; j < 9; j++) {
+                if (sudoku[i][j] instanceof ArrayList<?> possibles) {
+                    sudoku[i][j] = possibles.get(0);
+                    return;
+                }
+            }
+        }
     }
 
     /**
@@ -153,6 +168,7 @@ public class SudokuSolver {
                                     if (sudoku[i + delta_i][j + delta_j] instanceof ArrayList<?> possibles && possibles.contains(leftPossibility)) {
                                         sudoku[i + delta_i][j + delta_j] = leftPossibility;
                                         removeImpossibles();
+                                        changedInLastIteration = true;
                                     }
                                 }
                             }
@@ -194,6 +210,7 @@ public class SudokuSolver {
                         }
                     }
                 }
+                changedInLastIteration = true;
             }
         }
     }
@@ -299,6 +316,10 @@ public class SudokuSolver {
         return true;
     }
 
+//-------------------------------------------------------------------------------------------------------------------------
+    // Some public methods for debugging, testing and representation
+//-------------------------------------------------------------------------------------------------------------------------
+
     @Override
     public String toString() {
         return Arrays.stream(getSudoku()).map(
@@ -311,5 +332,14 @@ public class SudokuSolver {
         return Arrays.stream(sudokuSolver.getSudoku()).map(
                 row -> Arrays.toString(row).replaceAll("[\\[\\],]", "") + "\n"
         ).collect(Collectors.joining());
+    }
+
+    public static int[] sudokuToFlatArray(int[][] sudoku) {
+        SudokuSolver sudokuSolver = new SudokuSolver(sudoku);
+        return Arrays.stream(sudokuSolver.getSudoku()).flatMapToInt(Arrays::stream).toArray();
+    }
+
+    public static boolean compareSudokus(int[][] sudoku1, int[][] sudoku2) {
+        return Arrays.equals(sudokuToFlatArray(sudoku1), sudokuToFlatArray(sudoku2));
     }
 }
