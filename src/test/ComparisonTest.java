@@ -4,45 +4,42 @@ import main.BacktrackingSolver;
 import main.SudokuSolver;
 import org.junit.jupiter.api.Test;
 
-import java.awt.*;
-
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
-import static test.SampleSudokus.*;
+import static test.EasySudokus.*;
 
 public class ComparisonTest {
 
     @Test
     void comparisonTest1() {
-        testCompare(sudoku1);
+        testCompare(easySudoku1);
     }
 
     @Test
     void comparisonTest2() {
-        testCompare(sudoku2);
+        testCompare(easySudoku2);
     }
 
     @Test
     void comparisonTest3() {
-        testCompare(sudoku3);
+        testCompare(easySudoku3);
     }
 
     @Test
     void comparisonTest4() {
-        testCompare(sudoku4);
+        testCompare(easySudoku4);
     }
 
     @Test
     void comparisonTest5() {
-        testCompare(sudoku5);
+        testCompare(easySudoku5);
     }
 
     @Test
     void comparisonTest6() {
-        testCompare(sudoku6);
+        testCompare(easySudoku6);
     }
 
-    void testCompare(int[][] sudoku) {
+    public static void testCompare(int[][] sudoku) {
         int[][] complexSolverSudoku = copySudoku(sudoku);
         int[][] backtrackingSolverSudoku = copySudoku(sudoku);
         complexSolverSudoku = SudokuSolver.solveSudoku(complexSolverSudoku);

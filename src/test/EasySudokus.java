@@ -2,8 +2,8 @@ package test;
 
 import java.util.Arrays;
 
-public class SampleSudokus {
-    public final static int[][] sudoku1 = {
+public class EasySudokus {
+    public final static int[][] easySudoku1 = {
             {0, 0, 8, 1, 0, 7, 0, 0, 0},
             {6, 9, 7, 0, 0, 0, 3, 4, 1},
             {2, 4, 0, 0, 3, 0, 5, 8, 0},
@@ -14,7 +14,7 @@ public class SampleSudokus {
             {0, 8, 0, 0, 7, 0, 9, 1, 0},
             {0, 0, 3, 0, 0, 0, 2, 0, 5}
     };
-    public final static int[][] sudoku2 = {
+    public final static int[][] easySudoku2 = {
             {9, 4, 7, 0, 6, 8, 1, 0, 0},
             {6, 5, 0, 0, 0, 4, 8, 0, 7},
             {8, 0, 0, 0, 0, 0, 0, 0, 6},
@@ -25,7 +25,7 @@ public class SampleSudokus {
             {0, 0, 0, 0, 0, 9, 0, 6, 1},
             {0, 0, 5, 8, 0, 2, 9, 0, 3}
     };
-    public final static int[][] sudoku3 = {
+    public final static int[][] easySudoku3 = {
             {0, 1, 8, 7, 0, 3, 0, 9, 0},
             {0, 0, 4, 2, 6, 1, 8, 7, 0},
             {0, 0, 0, 0, 5, 0, 0, 6, 0},
@@ -36,7 +36,7 @@ public class SampleSudokus {
             {0, 7, 1, 6, 8, 0, 0, 0, 0},
             {0, 0, 0, 0, 3, 0, 0, 0, 0}
     };
-    public final static int[][] sudoku4 = {
+    public final static int[][] easySudoku4 = {
             {0, 4, 0, 0, 1, 8, 9, 7, 3},
             {9, 0, 0, 3, 0, 5, 1, 2, 0},
             {0, 1, 0, 0, 2, 4, 0, 0, 6},
@@ -47,7 +47,7 @@ public class SampleSudokus {
             {7, 0, 0, 0, 8, 3, 0, 0, 0},
             {4, 0, 5, 0, 6, 0, 3, 0, 0}
     };
-    public final static int[][] sudoku5 = {
+    public final static int[][] easySudoku5 = {
             {4, 0, 0, 5, 0, 0, 7, 0, 0},
             {2, 0, 7, 0, 3, 0, 0, 0, 0},
             {5, 0, 0, 7, 1, 2, 6, 0, 4},
@@ -58,7 +58,7 @@ public class SampleSudokus {
             {3, 6, 4, 8, 2, 0, 0, 7, 0},
             {7, 0, 5, 4, 0, 0, 1, 2, 3}
     };
-    public final static int[][] sudoku6 = {
+    public final static int[][] easySudoku6 = {
             {5, 3, 0, 0, 7, 0, 0, 0, 0},
             {6, 0, 0, 1, 9, 5, 0, 0, 0},
             {0, 9, 8, 0, 0, 0, 0, 6, 0},

@@ -46,11 +46,15 @@ public class SudokuSolver {
             for (int j = 0; j < 9; j++) {
                 int number = numbers[i][j];
                 if (number != 0 && !rowSet.add(number)) {
-                    throw new RuntimeException("Invalid sudoku input on field [" + i + "][" + j + "]");
+                    System.out.println("Invalid sudoku input on field [" + i + "][" + j + "]");
+                    System.out.println("Number: " + number + " duplicate in row");
+                    throw new RuntimeException();
                 }
                 number = numbers[j][i];
                 if (number != 0 && !colSet.add(number)) {
-                    throw new RuntimeException("Invalid sudoku input on field [" + j + "][" + i + "]");
+                    System.out.println("Invalid sudoku input on field [" + j + "][" + i + "]");
+                    System.out.println("Number: " + number + " duplicate in column");
+                    throw new RuntimeException();
                 }
             }
             rowSet.clear();

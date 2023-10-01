@@ -3,41 +3,41 @@ package test;
 import main.SudokuSolver;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.fail;
-import static test.SampleSudokus.*;
+import static test.EasySudokus.*;
 
 public class EasySolverTest {
 
     @Test
     void sudokuTest1() {
-        testSudokuSolving(sudoku1);
+        testSudokuSolving(easySudoku1);
     }
 
     @Test
     void sudokuTest2() {
-        testSudokuSolving(sudoku2);
+        testSudokuSolving(easySudoku2);
     }
 
     @Test
     void sudokuTest3() {
-        testSudokuSolving(sudoku3);
+        testSudokuSolving(easySudoku3);
     }
 
     @Test
     void sudokuTest4() {
-        testSudokuSolving(sudoku4);
+        testSudokuSolving(easySudoku4);
     }
 
     @Test
     void sudokuTest5() {
-        testSudokuSolving(sudoku5);
+        testSudokuSolving(easySudoku5);
     }
 
     @Test
     void sudokuTest6() {
-        testSudokuSolving(sudoku6);
+        testSudokuSolving(easySudoku6);
     }
 
-    void testSudokuSolving(int[][] sudoku) {
+    public static void testSudokuSolving(int[][] sudoku) {
         try {
             Thread executor = Thread.currentThread();
             (new Thread(() -> {

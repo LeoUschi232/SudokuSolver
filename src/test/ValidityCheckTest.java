@@ -3,18 +3,18 @@ package test;
 import main.SudokuSolver;
 import org.junit.jupiter.api.Test;
 
-import static test.SampleSudokus.*;
+import static test.EasySudokus.*;
 
 public class ValidityCheckTest {
 
 
     @Test
     void validityCheckTest1() {
-        SudokuSolver.checkNumbersValidity(sudoku1);
-        SudokuSolver.checkNumbersValidity(sudoku2);
-        SudokuSolver.checkNumbersValidity(sudoku3);
-        SudokuSolver.checkNumbersValidity(sudoku4);
-        SudokuSolver.checkNumbersValidity(sudoku5);
-        SudokuSolver.checkNumbersValidity(sudoku6);
+        SudokuSolver.checkNumbersValidity(easySudoku1);
+        SudokuSolver.checkNumbersValidity(easySudoku2);
+        SudokuSolver.checkNumbersValidity(easySudoku3);
+        SudokuSolver.checkNumbersValidity(easySudoku4);
+        SudokuSolver.checkNumbersValidity(easySudoku5);
+        SudokuSolver.checkNumbersValidity(easySudoku6);
     }
 }

@@ -4,42 +4,40 @@ import main.BacktrackingSolver;
 import main.SudokuSolver;
 import org.junit.jupiter.api.Test;
 
-import java.util.Arrays;
-import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.fail;
-import static test.SampleSudokus.*;
+import static test.EasySudokus.*;
 
 public class BacktrackingTest {
 
     @Test
     void backtrackingTest1() {
-        testBacktrackingSolving(sudoku1);
+        testBacktrackingSolving(easySudoku1);
     }
 
     @Test
     void backtrackingTest2() {
-        testBacktrackingSolving(sudoku2);
+        testBacktrackingSolving(easySudoku2);
     }
 
     @Test
     void backtrackingTest3() {
-        testBacktrackingSolving(sudoku3);
+        testBacktrackingSolving(easySudoku3);
     }
 
     @Test
     void backtrackingTest4() {
-        testBacktrackingSolving(sudoku4);
+        testBacktrackingSolving(easySudoku4);
     }
 
     @Test
     void backtrackingTest5() {
-        testBacktrackingSolving(sudoku5);
+        testBacktrackingSolving(easySudoku5);
     }
 
     @Test
     void backtrackingTest6() {
-        testBacktrackingSolving(sudoku6);
+        testBacktrackingSolving(easySudoku6);
     }
 
     void testBacktrackingSolving(int[][] sudoku) {
