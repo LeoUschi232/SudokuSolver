@@ -3,9 +3,11 @@ package main;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.stream.Collectors;
 
 public class SudokuSolver {
     private final Object[][] sudoku;
+    private boolean changedInLastIteration;
 
     /**
      * Initializes the SudokuSolver with the given Sudoku numbers
@@ -26,6 +28,7 @@ public class SudokuSolver {
                 }
             }
         }
+        changedInLastIteration = true;
     }
 
     /**
@@ -92,7 +95,10 @@ public class SudokuSolver {
      */
     private void solve() {
         while (!checkSudoku()) {
-            removeImpossibles();
+            while (changedInLastIteration) {
+                changedInLastIteration = false;
+                removeImpossibles();
+            }
             assignIsolatedNumbers();
         }
         checkNumbersValidity(getSudoku());
@@ -118,8 +124,12 @@ public class SudokuSolver {
                     }
                 }
             }
-            assignIsolatedNumber(amountLeftPossibilitiesPerValueRow, i, DigitCollectionType.ROW);
-            assignIsolatedNumber(amountLeftPossibilitiesPerValueColumn, i, DigitCollectionType.COLUMN);
+            if (Arrays.stream(amountLeftPossibilitiesPerValueRow).anyMatch(amount -> amount == 1)) {
+                assignIsolatedNumber(amountLeftPossibilitiesPerValueRow, i, DigitCollectionType.ROW);
+            }
+            if (Arrays.stream(amountLeftPossibilitiesPerValueColumn).anyMatch(amount -> amount == 1)) {
+                assignIsolatedNumber(amountLeftPossibilitiesPerValueColumn, i, DigitCollectionType.COLUMN);
+            }
         }
 
         for (int i = 1; i < 9; i += 3) {
@@ -134,13 +144,16 @@ public class SudokuSolver {
                         }
                     }
                 }
-                for (int leftPossibility = 1; leftPossibility < 10; leftPossibility++) {
-                    int amount = amountLeftPossibilitiesPerValueBox[leftPossibility];
-                    if (amount == 1) {
-                        for (int delta_i = -1; delta_i <= 1; delta_i++) {
-                            for (int delta_j = -1; delta_j <= 1; delta_j++) {
-                                if (sudoku[i + delta_i][j + delta_j] instanceof ArrayList<?> possibles && possibles.contains(leftPossibility)) {
-                                    sudoku[i + delta_i][j + delta_j] = leftPossibility;
+                if (Arrays.stream(amountLeftPossibilitiesPerValueBox).anyMatch(amount -> amount == 1)) {
+                    for (int leftPossibility = 1; leftPossibility < 10; leftPossibility++) {
+                        int amount = amountLeftPossibilitiesPerValueBox[leftPossibility];
+                        if (amount == 1) {
+                            for (int delta_i = -1; delta_i <= 1; delta_i++) {
+                                for (int delta_j = -1; delta_j <= 1; delta_j++) {
+                                    if (sudoku[i + delta_i][j + delta_j] instanceof ArrayList<?> possibles && possibles.contains(leftPossibility)) {
+                                        sudoku[i + delta_i][j + delta_j] = leftPossibility;
+                                        removeImpossibles();
+                                    }
                                 }
                             }
                         }
@@ -170,11 +183,13 @@ public class SudokuSolver {
                         case ROW -> {
                             if (sudoku[i][j] instanceof ArrayList<?> possibles && possibles.contains(leftPossibility)) {
                                 sudoku[i][j] = leftPossibility;
+                                removeImpossibles();
                             }
                         }
                         case COLUMN -> {
                             if (sudoku[j][i] instanceof ArrayList<?> possibles && possibles.contains(leftPossibility)) {
                                 sudoku[j][i] = leftPossibility;
+                                removeImpossibles();
                             }
                         }
                     }
@@ -247,6 +262,7 @@ public class SudokuSolver {
             possibles.remove(number);
             if (possibles.size() == 1) {
                 sudoku[x][y] = possibles.get(0);
+                changedInLastIteration = true;
             }
         }
     }
@@ -283,4 +299,17 @@ public class SudokuSolver {
         return true;
     }
 
+    @Override
+    public String toString() {
+        return Arrays.stream(getSudoku()).map(
+                row -> Arrays.toString(row).replaceAll("[\\[\\],]", "") + "\n"
+        ).collect(Collectors.joining());
+    }
+
+    public static String sudokuToString(int[][] sudoku) {
+        SudokuSolver sudokuSolver = new SudokuSolver(sudoku);
+        return Arrays.stream(sudokuSolver.getSudoku()).map(
+                row -> Arrays.toString(row).replaceAll("[\\[\\],]", "") + "\n"
+        ).collect(Collectors.joining());
+    }
 }

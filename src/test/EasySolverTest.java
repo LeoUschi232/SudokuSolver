@@ -47,9 +47,7 @@ public class EasySolverTest {
             (new Thread(() -> {
                 int[][] solvedSudoku = SudokuSolver.solveSudoku(sudoku);
                 System.out.println(
-                        "Solved Sudoku:\n" + Arrays.stream(solvedSudoku).map(
-                                row -> Arrays.toString(row).replaceAll("[\\[\\],]", "") + "\n"
-                        ).collect(Collectors.joining())
+                        "Solved Sudoku:\n" + SudokuSolver.sudokuToString(solvedSudoku)
                 );
                 executor.interrupt();
             })).start();

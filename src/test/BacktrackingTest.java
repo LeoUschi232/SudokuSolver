@@ -1,6 +1,7 @@
 package test;
 
 import main.BacktrackingSolver;
+import main.SudokuSolver;
 import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
@@ -47,9 +48,7 @@ public class BacktrackingTest {
             (new Thread(() -> {
                 int[][] solvedSudoku = BacktrackingSolver.solve(sudoku);
                 System.out.println(
-                        "Valid sudoku solution:\n" + Arrays.stream(solvedSudoku).map(
-                                row -> Arrays.toString(row).replaceAll("[\\[\\],]", "") + "\n"
-                        ).collect(Collectors.joining())
+                        "Solved Sudoku:\n" + SudokuSolver.sudokuToString(solvedSudoku)
                 );
                 executor.interrupt();
             })).start();
